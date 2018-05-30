@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <stdio.h>
+#include <math.h>
 #include "Piece.h"
 #include "coordinate.h"
 #include "IllegalCoordinateException.h"
@@ -22,9 +24,11 @@ public:
 //Constractor and Destractor
     Board (size_t newsize);
     Board (Board &b);
+    Board();
     ~Board();
 
 //Methods
+Board& init(int bsize);
 
 Board& operator = (string s);
 
@@ -40,7 +44,7 @@ string draw (size_t n);
 
 friend std::istream& operator >> (std::istream& in, Board& b);
 
-        //see function getLine()
+
 
 }
 ;

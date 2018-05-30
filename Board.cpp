@@ -9,17 +9,29 @@ public:
 
 //new function for my example
 
+Board& Board:: init(int bsize){
+    size=bsize;
+    board=new Piece*[bsize];
+    return *this;
+}
+
+
 Board& Board:: operator = (string s){
     size_t counter=0;
     for (size_t i = 0; i <this->size; ++i) {
         for (size_t j = 0; j <this->size ; ++j) {
-            if(counter<s.size()) board[i][j]=s[counter++];
+            if(counter<s.size()) this->board[i][j]=s[counter++];
         }
     }
     return *this;
 }
 
 //end of new function
+
+Board:: Board(){
+    size=3;
+    board=new Piece*[size];
+};
 
 Board::Board (size_t newsize){
 	size=newsize;
@@ -43,23 +55,24 @@ Board::Board (Board &b){
 }
 
 Board::~Board(){
-	for(int i=0;i<size;i++){
-		delete board[i];
-	}
+	for(int i=0;i<size;i++) {
+            delete board[i];
+    }
 	delete board;
-	
 };
 
 
 Board& Board::operator = (Board newb){
 	this->~Board();
 	size=newb.size;
-	for (int i=0; i<newb.size; i++){
-		for (int j=0; j<newb.size; j++){
-			board[i][j]=newb.board[i][j];
+    board=new Piece*[size];
+	for(int i=0; i<size; i++){
+		for (int j=0; j<size; j++){
+			board[i][j]=newb.board[i][j].getValue();
 		}
 	}
-	return *this;
+
+    return *this;
 };
 
 Board& Board::operator = (char c){
@@ -146,18 +159,21 @@ string Board:: draw (size_t n){
 
 
 std::istream& operator >> (std::istream& in, Board& b) {
-    string s,str="";
-    int counter=b.size*b.size;
-    int count=b.size;
-    while(count>0) {
-        getline(in, s);
-        str=str+s;
-        count--;
+    string s,str;//s=the whole chars of the text file, str=a single row from the file
+   // int counter=b.size*b.size;
+    size_t str_size;
+    while(getline(in,str)){
+        s=s+str;
+        str_size=str.length();
     }
-    if(str.size()==counter) b=str;
-    else {
-        throw DosentFitException(s);
-    }
+    b.init(str_size);
+  //  cout<<"b:"<<endl<<b<<endl;
+
+//    if(str.size()==counter) b=s;
+//    else {
+//        throw DosentFitException(s);
+//    }
+
     return in;
 
 }
