@@ -9,9 +9,12 @@ public:
 
 //new function for my example
 
-Board& Board:: init(int bsize){
+Board& Board:: init(size_t bsize){
     size=bsize;
-    board=new Piece*[bsize];
+    board=new Piece*[size];
+    for(int i=0;i<size;i++){
+        board[i]=new Piece[size];
+    }
     return *this;
 }
 
@@ -20,7 +23,7 @@ Board& Board:: operator = (string s){
     size_t counter=0;
     for (size_t i = 0; i <this->size; ++i) {
         for (size_t j = 0; j <this->size ; ++j) {
-            if(counter<s.size()) this->board[i][j]=s[counter++];
+            if(counter<s.size()) board[i][j]=s[counter++];
         }
     }
     return *this;
@@ -31,6 +34,10 @@ Board& Board:: operator = (string s){
 Board:: Board(){
     size=3;
     board=new Piece*[size];
+    for(int i=0;i<size;i++){
+        board[i]=new Piece[size];
+    }
+
 };
 
 Board::Board (size_t newsize){
@@ -105,11 +112,27 @@ Piece& Board::operator [] (const coordinate& c){
 }
 
 string Board:: draw (size_t n){
+//        static int counter=1;
+//        string name= "board(";
+//        name+=to_string(counter++)+").ppm";
+    /* trying some new code found in github*/
+    string filename="Board";
+    struct stat buffer;
+    string file=filename+".ppm";
+    int i=0;
+    while(stat (file.c_str(), &buffer) == 0){
+        file=filename+"("+to_string(i)+").ppm";
+        i++;
+    }
+    filename=file;
+    //end of new code*/
+
+
         const size_t dimx = n, dimy = n;
 		size_t box=n/this->size;
 		size_t counterx=0;
         size_t countery=0;
-		ofstream imageFile("board.ppm", ios::out | ios::binary);
+		ofstream imageFile(filename, ios::out | ios::binary);
         imageFile << "P6" << endl << dimx <<" " << dimy << endl << 255<< endl;
         RGB image[n*n];
 
@@ -152,7 +175,7 @@ string Board:: draw (size_t n){
         ///
         imageFile.write(reinterpret_cast<char*>(&image), 3*n*n);
         imageFile.close();
-    return "name";
+    return filename;
 
 	}
 
@@ -167,12 +190,8 @@ std::istream& operator >> (std::istream& in, Board& b) {
         str_size=str.length();
     }
     b.init(str_size);
-  //  cout<<"b:"<<endl<<b<<endl;
+    b=s;
 
-//    if(str.size()==counter) b=s;
-//    else {
-//        throw DosentFitException(s);
-//    }
 
     return in;
 

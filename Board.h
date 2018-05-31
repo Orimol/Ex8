@@ -9,6 +9,7 @@
 #include "IllegalCharException.h"
 #include <fstream>
 #include "DosentFitException.h"
+#include <sys/stat.h>
 using namespace std;
 
 
@@ -28,7 +29,7 @@ public:
     ~Board();
 
 //Methods
-Board& init(int bsize);
+Board& init(size_t bsize);
 
 Board& operator = (string s);
 
