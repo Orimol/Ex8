@@ -10,6 +10,7 @@ public:
 //new function for my example
 
 Board& Board:: init(size_t bsize){
+    this->~Board();	
     size=bsize;
     board=new Piece*[size];
     for(int i=0;i<size;i++){
