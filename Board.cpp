@@ -168,9 +168,6 @@ string Board:: draw (size_t n){
          countery++;
 		}
 
-        image[0].red = 255;
-        image[0].blue = 0;
-        image[0].green = 0;
         ///
         ///image processing
         ///
